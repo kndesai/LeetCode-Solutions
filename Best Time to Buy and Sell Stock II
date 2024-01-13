@@ -1,0 +1,19 @@
+class Solution(object):
+    def maxProfit(self, prices):
+        l=len(prices)
+        m=0
+        i=0
+        a=0 
+        b=0
+
+        while(i<l-1):
+            if prices[i]<=prices[i+1]:
+                b=i+1
+                i=i+1
+            else: 
+                m=m+(prices[b]-prices[a])
+                a=i+1
+                b=i+1
+                i=i+1
+        if(b>a): m = m + (prices[b]-prices[a])
+        return m
