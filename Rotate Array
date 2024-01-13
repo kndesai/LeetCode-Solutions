@@ -1,0 +1,14 @@
+class Solution(object):
+    def rotate(self, nums, k):
+        a=[]
+        l=len(nums)
+        k=k%l
+        b=k
+        while(b>0):
+            a.append(nums[l-b])
+            b=b-1
+        
+        for n in range(l-k-1,-1,-1):
+            nums[n+k]=nums[n]
+        
+        nums[:k] = a[:k]
