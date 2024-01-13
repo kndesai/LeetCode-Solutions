@@ -1,0 +1,11 @@
+class Solution(object):
+    def majorityElement(self, nums):
+        c=0
+        k=len(nums)
+        for a in set(nums[0:k/2+1]):
+            for b in nums:
+                if b==a: 
+                    c=c+1
+            if c>k/2:
+                return a
+            else: c=0
