@@ -1,0 +1,14 @@
+class Solution(object):
+    def jump(self, nums):
+        l=len(nums)
+        m=0
+        c=0
+        j=0
+
+        for i in range(l):
+            if i>c:
+                c=m
+                j=j+1
+            m = max(m, nums[i]+i)
+        
+        return j
