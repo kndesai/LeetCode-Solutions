@@ -1,0 +1,79 @@
+
+
+
+typedef struct {
+    int* elements;
+    int size;
+    int capacity;
+} RandomizedSet;
+
+RandomizedSet* randomizedSetCreate() {
+    RandomizedSet* set = (RandomizedSet*)malloc(sizeof(RandomizedSet));
+    set->elements = NULL;
+    set->size = 0;
+    set->capacity = 0;
+    return set;
+}
+
+bool randomizedSetInsert(RandomizedSet* obj, int val) {
+    for (int i = 0; i < obj->size; i++) {
+        if (obj->elements[i] == val) {
+            return false; // Element already exists, cannot insert
+        }
+    }
+
+    if (obj->size == obj->capacity) {
+        // Double the capacity if needed
+        obj->capacity = obj->capacity == 0 ? 1 : obj->capacity * 2;
+        obj->elements = (int*)realloc(obj->elements, obj->capacity * sizeof(int));
+    }
+
+    obj->elements[obj->size++] = val;
+    return true;
+}
+
+bool randomizedSetRemove(RandomizedSet* obj, int val) {
+    int indexToRemove = -1;
+    for (int i = 0; i < obj->size; i++) {
+        if (obj->elements[i] == val) {
+            indexToRemove = i;
+            break;
+        }
+    }
+
+    if (indexToRemove == -1) {
+        return false; // Element not found, cannot remove
+    }
+
+    obj->elements[indexToRemove] = obj->elements[obj->size - 1];
+    obj->size--;
+
+    return true;
+}
+
+int randomizedSetGetRandom(RandomizedSet* obj) {
+    if (obj->size == 0) {
+        // Undefined behavior if the set is empty, handle accordingly in a real-world scenario
+        return 0;
+    }
+
+    int randomIndex = rand() % obj->size;
+    return obj->elements[randomIndex];
+}
+
+void randomizedSetFree(RandomizedSet* obj) {
+    free(obj->elements);
+    free(obj);
+}
+
+/**
+ * Your RandomizedSet struct will be instantiated and called as such:
+ * RandomizedSet* obj = randomizedSetCreate();
+ * bool param_1 = randomizedSetInsert(obj, val);
+ 
+ * bool param_2 = randomizedSetRemove(obj, val);
+ 
+ * int param_3 = randomizedSetGetRandom(obj);
+ 
+ * randomizedSetFree(obj);
+*/
