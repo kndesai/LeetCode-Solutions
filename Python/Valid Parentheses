@@ -1,0 +1,23 @@
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        a=[]
+        s=list(s)
+        for i in s:
+            if i in "(,{,[":
+                a=a+[i]
+            elif a==[]:
+                return False
+            elif i==')' and a[-1]=='(':
+                a.pop()
+            elif i=='}' and a[-1]=='{':
+                a.pop()
+            elif i==']' and a[-1]=='[':
+                a.pop()
+            else: return False
+
+        if a != []: return False
+        return True 
