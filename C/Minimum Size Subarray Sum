@@ -1,0 +1,24 @@
+int minSubArrayLen(int target, int* nums, int numsSize) {
+    int start = 0, end = 0, sum = 0, minLength = numsSize + 1;
+
+    while (end < numsSize) {
+        // Expand the window
+        sum += nums[end];
+
+        // Check if the sum is greater than or equal to the target
+        while (sum >= target) {
+            // Update the minimum length
+            minLength = (end - start + 1) < minLength ? (end - start + 1) : minLength;
+
+            // Shrink the window from the left
+            sum -= nums[start];
+            start++;
+        }
+
+        // Move the right pointer to the next element
+        end++;
+    }
+
+    // If minLength is still greater than numsSize, no valid subarray is found
+    return minLength > numsSize ? 0 : minLength;
+}
