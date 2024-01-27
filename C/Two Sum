@@ -1,0 +1,23 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    int* result = (int*)malloc(2 * sizeof(int));
+    *returnSize = 2;
+
+    int hashTable[20050] = {0};
+
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+
+        if (hashTable[complement + 10000] != 0) {
+            result[0] = hashTable[complement + 10000] - 1;
+            result[1] = i;
+            return result;
+        }
+
+        hashTable[nums[i] + 10000] = i + 1;
+    }
+
+    return result;
+}
