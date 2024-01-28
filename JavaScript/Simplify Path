@@ -1,0 +1,18 @@
+/**
+ * @param {string} path
+ * @return {string}
+ */
+var simplifyPath = function(path) {
+    const components = path.split('/');
+    const stack = [];
+
+    for (const component of components) {
+        if (component === '..') {
+            stack.pop(); // Go up one level
+        } else if (component !== '' && component !== '.') {
+            stack.push(component); // Push valid directory/file names
+        }
+    }
+
+    return '/' + stack.join('/');
+};
