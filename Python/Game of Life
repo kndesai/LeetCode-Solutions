@@ -1,0 +1,36 @@
+class Solution(object):
+    def gameOfLife(self, board):
+        """
+        :type board: List[List[int]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        rows, cols = len(board), len(board[0])
+
+        def count_live_neighbors(row, col):
+            count = 0
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]
+
+            for dr, dc in directions:
+                nr, nc = row + dr, col + dc
+                if 0 <= nr < rows and 0 <= nc < cols and abs(board[nr][nc]) == 1:
+                    count += 1
+
+            return count
+
+        for i in range(rows):
+            for j in range(cols):
+                live_neighbors = count_live_neighbors(i, j)
+
+                # Apply the rules
+                if board[i][j] == 1 and (live_neighbors < 2 or live_neighbors > 3):
+                    board[i][j] = -1  # Mark for death
+                elif board[i][j] == 0 and live_neighbors == 3:
+                    board[i][j] = 2   # Mark for birth
+
+        # Update the board based on marked cells
+        for i in range(rows):
+            for j in range(cols):
+                if board[i][j] == -1:
+                    board[i][j] = 0
+                elif board[i][j] == 2:
+                    board[i][j] = 1
