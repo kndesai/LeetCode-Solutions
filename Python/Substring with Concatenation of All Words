@@ -1,0 +1,41 @@
+class Solution(object):
+    def findSubstring(self, s, words):
+        """
+        :type s: str
+        :type words: List[str]
+        :rtype: List[int]
+        """
+        if not s or not words:
+            return []
+
+        word_len = len(words[0])
+        word_count = len(words)
+        total_len = word_len * word_count
+        word_freq = Counter(words)
+        result = []
+
+        for i in range(word_len):
+            left, right = i, i
+            curr_freq = Counter()
+
+            while right + word_len <= len(s):
+                word = s[right:right + word_len]
+                right += word_len
+
+                if word in word_freq:
+                    curr_freq[word] += 1
+
+                    while curr_freq[word] > word_freq[word]:
+                        curr_freq[s[left:left + word_len]] -= 1
+                        left += word_len
+
+                    if right - left == total_len:
+                        result.append(left)
+
+                else:
+                    curr_freq.clear()
+                    left = right
+
+            curr_freq.clear()
+
+        return result
