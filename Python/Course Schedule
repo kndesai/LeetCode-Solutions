@@ -1,0 +1,35 @@
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        graph = defaultdict(list)
+
+        for course, prereq in prerequisites:
+            graph[course].append(prereq)
+
+        def hasCycle(course, visited, stack):
+            visited[course] = True
+            stack[course] = True
+
+            for neighbor in graph[course]:
+                if not visited[neighbor]:
+                    if hasCycle(neighbor, visited, stack):
+                        return True
+                elif stack[neighbor]:
+                    return True
+
+            stack[course] = False
+            return False
+
+        visited = [False] * numCourses
+        stack = [False] * numCourses
+
+        for course in range(numCourses):
+            if not visited[course]:
+                if hasCycle(course, visited, stack):
+                    return False
+
+        return True
