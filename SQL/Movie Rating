@@ -1,0 +1,27 @@
+WITH A AS (SELECT m.title as results
+FROM Movies m
+LEFT JOIN (
+    SELECT movie_id, 
+           ROUND(SUM(rating) / COUNT(rating), 2) AS averat
+    FROM MovieRating
+    WHERE created_at BETWEEN '2020-02-01' AND '2020-02-29'
+    GROUP BY movie_id
+) r ON m.movie_id = r.movie_id
+ORDER BY averat DESC, m.title
+LIMIT 1
+),
+B AS (SELECT u.name as results
+FROM Users u
+LEFT JOIN(
+    SELECT user_id,
+        COUNT(user_id) AS rat
+    FROM MovieRating
+    GROUP BY user_id 
+) r ON u.user_id = r.user_id
+ORDER BY rat DESC, u.name
+LIMIT 1
+)
+
+SELECT * FROM B
+UNION ALL
+SELECT * FROM A
