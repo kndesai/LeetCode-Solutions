@@ -1,0 +1,28 @@
+class Solution(object):
+    def minMutation(self, startGene, endGene, bank):
+        """
+        :type startGene: str
+        :type endGene: str
+        :type bank: List[str]
+        :rtype: int
+        """
+        if endGene not in bank:
+            return -1
+
+        bank = set(bank)
+        queue = deque([(startGene, 0)])
+
+        while queue:
+            currentGene, mutations = queue.popleft()
+
+            if currentGene == endGene:
+                return mutations
+
+            for i in range(len(currentGene)):
+                for nucleotide in ['A', 'C', 'G', 'T']:
+                    mutation = currentGene[:i] + nucleotide + currentGene[i + 1:]
+                    if mutation in bank:
+                        bank.remove(mutation)
+                        queue.append((mutation, mutations + 1))
+
+        return -1
