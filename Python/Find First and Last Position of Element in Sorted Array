@@ -1,0 +1,48 @@
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        def find_first_occurrence(nums, target):
+            start, end = 0, len(nums) - 1
+            result = -1
+
+            while start <= end:
+                mid = start + (end - start) // 2
+
+                if nums[mid] == target:
+                    result = mid
+                    end = mid - 1
+                elif nums[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+
+            return result
+
+        def find_last_occurrence(nums, target):
+            start, end = 0, len(nums) - 1
+            result = -1
+
+            while start <= end:
+                mid = start + (end - start) // 2
+
+                if nums[mid] == target:
+                    result = mid
+                    start = mid + 1
+                elif nums[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+
+            return result
+
+        start_idx = find_first_occurrence(nums, target)
+        
+        if start_idx == -1:
+            return [-1, -1]
+
+        end_idx = find_last_occurrence(nums, target)
+        return [start_idx, end_idx]
