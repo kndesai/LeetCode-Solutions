@@ -1,0 +1,53 @@
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        left = right = 0
+        # Initialize a counter to keep track of characters in t
+        target_count = Counter(t)
+        # Initialize variables to keep track of the current minimum window
+        min_window_size = float('inf')
+        min_window_start = 0
+        
+        # Counter for the characters present in the current window
+        window_count = Counter()
+        # Number of required characters
+        required_chars = len(target_count)
+        # Number of characters that are matching between window and t
+        formed = 0
+        
+        while right < len(s):
+            # Expand the window to the right
+            window_count[s[right]] += 1
+            
+            # Check if the current character is in t and if its count in window
+            # matches its count in t
+            if s[right] in target_count and window_count[s[right]] == target_count[s[right]]:
+                formed += 1
+            
+            # Try to minimize the window by contracting from the left
+            while formed == required_chars and left <= right:
+                # Update the minimum window if smaller
+                if right - left + 1 < min_window_size:
+                    min_window_size = right - left + 1
+                    min_window_start = left
+                
+                # Contract the window from the left
+                window_count[s[left]] -= 1
+                if s[left] in target_count and window_count[s[left]] < target_count[s[left]]:
+                    formed -= 1
+                
+                # Move the left pointer ahead
+                left += 1
+            
+            # Move the right pointer ahead
+            right += 1
+        
+        # Check if a valid window was found
+        if min_window_size == float('inf'):
+            return ""
+        else:
+            return s[min_window_start:min_window_start + min_window_size]
