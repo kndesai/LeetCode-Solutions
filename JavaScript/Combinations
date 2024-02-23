@@ -1,0 +1,25 @@
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+    const result = [];
+    
+    function backtrack(start, currCombo) {
+        if (currCombo.length === k) {
+            result.push([...currCombo]);
+            return;
+        }
+        
+        for (let i = start; i <= n; i++) {
+            currCombo.push(i);
+            backtrack(i + 1, currCombo);
+            currCombo.pop();
+        }
+    }
+    
+    backtrack(1, []);
+    
+    return result;
+};
